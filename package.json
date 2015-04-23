@@ -1,0 +1,26 @@
+{
+  "name": "yak",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "./cli.js",
+  "author": "Jeff Peterson",
+  "license": "MIT",
+  "dependencies": {
+    "babel": "*",
+    "babel-core": "*",
+    "babel-loader": "*",
+    "immutable": "*",
+    "json-loader": "*",
+    "minimist": "*",
+    "react": "*",
+    "flux": "*",
+    "keymirror": "*",
+    "react-hot-loader": "*",
+    "webpack": "*",
+    "webpack-dev-server": "*"
+  }
+}
