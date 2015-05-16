@@ -1,4 +1,4 @@
-import {Set} from 'immutable'
+import {Set, Map} from 'immutable'
 
 export function makeStoreFromReducer(reducer) {
   return new Store(reducer)

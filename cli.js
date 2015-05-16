@@ -1,4 +1,4 @@
-#!/usr/bin/env NODE_PATH=foo node
+#!/usr/bin/env node
 
 require("babel/register")({
   stage: 0

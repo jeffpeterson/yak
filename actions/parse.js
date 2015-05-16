@@ -2,15 +2,17 @@ module.exports = test
 
 let babel = require('babel')
 let fs = require('fs')
-var exec = require('child_process').exec
+let exec = require('child_process').exec
+let acorn = require('acorn')
 
 function test(opt) {
-  exec('ag -lG js "^ *//(.*->)" ' + opt._.slice(1).join(' '), function (error, stdout, stderr) {
-    let filenames = stdout.toString().split(/\s+/g).filter(x => x)
+  exec('ag -lG js ' + opt._.slice(1).join(' '), function (error, stdout, stderr) {
+    let filenames = stdout.toString().split(/\s+/g)
     console.log(filenames)
     filenames.sort().map(filename => {
       fs.readFile(filename, (err, contents) => {
-        testFile(filename, contents)
+        console.log(acorn.parse(contents))
+        // testFile(filename, contents)
       })
     })
   })
@@ -18,9 +20,7 @@ function test(opt) {
 
 function testFile(filename, contents) {
   let mod = require(filename)
-  let es5contents = transform(contents)
-  eval(es5contents);
-  return
+
   try {
     extractFunctions(contents).forEach(fun => {
       testFunction(mod[fun.name], fun)
@@ -40,7 +40,7 @@ function testFunction(fn, {sig, name, cases}) {
 
 function testCase(fn, [args, expected]) {
   args = trim(args)
-  let actual = eval(transform(`fn(${args})`))
+  let actual = eval(babel.transform(`fn(${args})`).code)
   let actualStr = JSON.stringify(actual)
   let expectedStr = JSON.stringify(eval(`(${expected})`))
 
@@ -95,8 +95,4 @@ function deparen(str) {
 
 function strip(str) {
   return str.replace(/^ +| +$/g, '')
-}
-
-function transform(contents) {
-  return babel.transform(contents, {stage: 0}).code
 }
